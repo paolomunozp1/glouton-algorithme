@@ -49,7 +49,7 @@ public class Glouton {
     				neufEntrepot.addCentr(j,grandM);
 				}
     			else 
-    			if (RP_exercice._matrCouts[i][j] > 0 || RP_exercice._prendZeros)	
+    			//if (RP_exercice._matrCouts[i][j] > 0 || RP_exercice._prendZeros)	
 				{ 	
 					// il faut savoir si on prendra les couts = 0 autant que vrais couts.				    							
     				neufEntrepot.addCentr(j,RP_exercice._matrCouts[i][j]);
@@ -76,13 +76,14 @@ public class Glouton {
     	/*
     	 *Calcule de la solution initiale.
     	 */    	 		    
-    	ensSolutionFinale.add((Entrepot)ensRestant.get(0));
-    	ensRestant.remove(0);	    	
-    	    	
+    	ensSolutionFinale.add((Entrepot)ensRestant.get(1));
+    	ensRestant.remove(1);	    	
+    	       	   	   
+		 boolean coutDescend = true;    	
     	/*
-    	 *Continuer la recherche jusqu'a ne plus avoir d'entrepôts restants.
-    	 */
-	    while(ensRestant.size()>0)
+    	 *Continuer la recherche jusqu'a ne plus avoir d'entrepôts restants.ensRestant.size()>0
+    	 */    	 
+	    while(coutDescend)
 	    {
 	    	
 	    	int min=RP_exercice.maxValeur;		    
@@ -109,19 +110,19 @@ public class Glouton {
   		    	/*
 		    	 *Comparer le meilleur coefficient de tous les entrepôts à mettre.
 		    	 */
-	    		if (min > coeff.getValeur )
+	    		if (min > coeff.getValeur )	    		
 	    		{
 	    			min= coeff.getValeur;
 	    			minCoeff = coeff;
 	    			indice = i;
+	    			if (min >0) coutDescend = false;
 	    		}    		
-		    }
-
+		    }			
 		    
 		    /*
 	    	 *La recherche a été productive, on a trouvé donc le meilleur entrepôt à insérer.
-	    	 */
-		    if (minCoeff !=  null)
+	    	 */	    	
+		    if (minCoeff !=  null && coutDescend)
 		    {		    	
 		    	//System.out.println("<Add: Id="+minCoeff.entrepot.id);
 		    	/*

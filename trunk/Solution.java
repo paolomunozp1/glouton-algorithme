@@ -21,6 +21,7 @@ import java.util.Hashtable;
  public class Solution
  {
  	private Hashtable vector; // il gardera toutes les  centrales de la solution courante
+ 	public int totalCout;
  	
  	public Solution(){ 			
  		vector = new Hashtable(); // id de la centrale , il est unique 		
@@ -116,15 +117,23 @@ import java.util.Hashtable;
 	{
 		Object[] sortie = vector.values().toArray();
 		int somme = 0;
-		
+		String idx ="";
+		int totalEntrepots = 0;
 		for (int i=0; i<sortie.length; i++)
  		{ 			
  			Centrale centr = (Centrale)sortie[i];
+ 			if (idx.indexOf(centr.idParent+";") == -1){ 				
+ 				idx +=centr.idParent+";";
+ 				totalEntrepots++;
+ 			}
+ 			
  			String str = ""; 			 			
  			str+="Centrale:"+centr.id+" Entrepot:"+centr.idParent+" cout="+centr.cout; 			 			 			
  			System.out.println(str);
  			somme +=centr.cout;
  		}	
+ 		somme += totalEntrepots*RP_exercice._coutOuverture;
+ 		
  		System.out.println("Centrales couvertes:"+sortie.length);
  		System.out.println("Cout Total:"+somme);
 	}
