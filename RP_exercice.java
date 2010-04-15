@@ -19,9 +19,10 @@ import java.io.IOException;
  */
  
 public class RP_exercice { 	
- 	public static int maxValeur = 1000000;
+
+ 	public static int maxValeur = 1000000; // mettre une valuer superieur a toutes, un grand M RP_exercice.maxValeur
  	public  static int _coutOuverture; 
-    public static int _nbEntrepots;
+    public static int _nbEntrepots; //quantité d'entrepôts ou des centrales.
     public static int[][] _matrCouts;
     public static boolean _prendZeros = false;
     
@@ -36,9 +37,9 @@ public class RP_exercice {
             System.out.println();
             System.out.println("Bienvenu                                                    ");
 			System.out.println("------------------------------------------------------------");
-			System.out.println("|               CHOISISSEZ UNE OPTION                      |");
-			System.out.println("|               ---------------------                      |");
-			System.out.println("|   0. Nom du fichier.                                     |");
+			System.out.println("|               VEUILLEZ SAISIR:                           |");
+			System.out.println("|               ----------------                           |");
+			System.out.println("|   Nom du fichier.                                        |");
     		System.out.println("|                                                          |");
 			System.out.println("------------------------------------------------------------");
     		System.out.println();
@@ -80,15 +81,37 @@ public class RP_exercice {
 
 			inputStream.close();
 
-
+			
+			/*
+	    	 *On va lire la matrice des coûts obtenu à partir de la lecture du fichier.
+	    	 */
+			Glouton.preparer();
+			
+			/*
+	    	 *On va déterminer une solution initiale à utiliser lors du démarrage de l'algo.
+	    	 */
+			Glouton.creerSolutionInit();
+			
+			
+			/*
+	    	 *On va exécuter l'algorithme de descente GLOUTON.
+	    	 */
 			Compteur.start();	    			    	
 			Glouton.Executer();
 			Compteur.stop();			  
 			
-			
+			/*
+	    	 *On va montrer la solution finale locale.
+	    	 */ 									
 			Glouton.Montrer();
-			System.out.println("Temps d'execution="+Compteur.value()+"ms");
-          
+			
+			
+			/*
+	    	 *On va déterminer et montrer les voisins de la solution finale.
+	    	 */ 
+	    	Glouton.creerVoisinage();
+
+          	System.out.println("Temps Glouton="+Compteur.value()+"ms");
         }  
         catch (Exception e)  
         {

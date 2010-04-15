@@ -24,9 +24,12 @@ import java.util.Hashtable;
  	public int totalCout;
  	
  	public Solution(){ 			
- 		vector = new Hashtable(); // id de la centrale , il est unique 		
+ 		vector = new Hashtable(); 
  	}
  	
+ 	/*
+	 *.
+	 */
  	public void add(Coefficient input)
  	{ 		
  		Entrepot inputEntr = input.entrepot;	
@@ -37,11 +40,15 @@ import java.util.Hashtable;
 			Centrale neuve = inputEntr.get(idxD);
 					
 			if (idxG != -1)
-			vector.remove(idxG);	// Alors, on ferme la centrale de la solution (apres on la suprimera)
+			vector.remove(idxG);	// Alors, on ferme la centrale de la solution
 			vector.put(neuve.id, neuve);
  		} 	 		
  	}
  	
+ 	
+ 	/*
+	 *.
+	 */
  	public void add(Entrepot input)
  	{ 		
  		
@@ -53,14 +60,29 @@ import java.util.Hashtable;
  		} 	 		
  	}
  	
- 	public Centrale get(int i)
+ 	
+ 	
+ 	/*
+	 *.
+	 */
+ 	public Centrale get(int i) // il marche avec les id de la centrale
  	{ 		 			
  		return (Centrale)vector.get(i); 		
  	}
+ 	
+ 	
+ 	/*
+	 *.
+	 */
  	public boolean has(int i)
  	{
  		return vector.containsKey(i);
  	}
+ 	
+ 	
+ 	/*
+	 *.
+	 */
  	public Coefficient comparer(Entrepot coutDiff)// calcule du coefficient
  	{ 		
  		int sum = 0;
@@ -103,16 +125,29 @@ import java.util.Hashtable;
  		return coeff; 	
  	}
  	
+ 	
+ 	/*
+	 *.
+	 */
  	public void supr(int i)
  	{
  		vector.remove(i);	
  	}
 	
+	
+ 	/*
+	 *.
+	 */
 	public int size()
 	{
 		return vector.size();
 	}
+		
 	
+	
+ 	/*
+	 *.
+	 */
 	public void montrer()
 	{
 		Object[] sortie = vector.values().toArray();

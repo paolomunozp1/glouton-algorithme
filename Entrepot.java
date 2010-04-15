@@ -19,17 +19,19 @@ import java.util.Vector;
  
 
 public class Entrepot{	
-	public int id; 			//identificateur de l'entrepot
-	private Vector centrales; // total de centrales.
+	public int id; 				//identificateur de l'entrepot
+	private Vector centrales; // liste de centrales.
 	
-	public Entrepot() // quantité total de centrales.
+	public Entrepot() 
 	{		
 		centrales = new Vector(RP_exercice._nbEntrepots);	
 	}
+	
 	public Centrale get(int i)
 	{
 		return (Centrale)centrales.get(i);
 	}
+	
 	public void addCentr(int pId, int pCout )
 	{
 		Centrale neuve = new Centrale();
@@ -38,15 +40,10 @@ public class Entrepot{
 		neuve.cout = pCout;
 		centrales.add(neuve);
 	}
+	
 	public int size()
 	{
 		return centrales.size();
-	}
-	public void supr()
-	{
-		
-	}
-		
-	
+	}		
 	
 }
