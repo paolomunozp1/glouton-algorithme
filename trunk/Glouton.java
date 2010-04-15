@@ -3,6 +3,8 @@ import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Vector; 
+import java.util.*;
+
 /**
  * -----------------------------------------------------------------------------
  * Class pour   
@@ -25,13 +27,13 @@ public class Glouton {
     
     
     // préparer les couts non specifies avec une valeur M = Max+1
-    private static void preparer() 
+    public static void preparer() 
     {
     	ensSolutionFinale= new Solution();
     	ensRestant = new Vector();
     	
-    	int grandM = RP_exercice.maxValeur; // mettre une valuer superieur a toutes, un grand M RP_exercice.maxValeur
-    	int n= RP_exercice._nbEntrepots;		//quantité d'entrepôts ou des centrales.
+    	int grandM = RP_exercice.maxValeur; 
+    	int n= RP_exercice._nbEntrepots;		
     	
     	for (int i=0; i<n; i++)
     	{
@@ -47,12 +49,13 @@ public class Glouton {
 				{						
     				// on met le grand M a ceux qui n'apparaient pas dans le fichier txt.
     				neufEntrepot.addCentr(j,grandM);
+    				RP_exercice._matrCouts[i][j] = grandM;
 				}
     			else 
     			//if (RP_exercice._matrCouts[i][j] > 0 || RP_exercice._prendZeros)	
 				{ 	
 					// il faut savoir si on prendra les couts = 0 autant que vrais couts.				    							
-    				neufEntrepot.addCentr(j,RP_exercice._matrCouts[i][j]);
+    				neufEntrepot.addCentr(j,RP_exercice._matrCouts[i][j]);    				
 				}				
 				
 				
@@ -66,19 +69,38 @@ public class Glouton {
      	ensSolutionFinale.montrer();
     }
     
+    public static void creerVoisinage()
+    {
+    		    	    	 		        	 
+    	Voisinage voisins = new Voisinage(ensSolutionFinale);
+    	
+    	/*
+    	 *On va déterminer et montrer les voisins de la solution finale.
+    	 */ 
+    	while (voisins.isValid())
+    	{
+    		Solution voisin = voisins.next();    		
+    		voisin.montrer();
+    		Scanner sc = new Scanner(System.in);								
+			String option1=sc.nextLine();
+    	}    	    	
+    }
+    
+    public static void creerSolutionInit()
+    {
+    	/*
+    	 *Calcule de la solution initiale
+    	 */    	 		    
+    	ensSolutionFinale.add((Entrepot)ensRestant.get(1));
+    	ensRestant.remove(1);	    	
+		
+    }
     
     public  static void Executer()  
     {
     	System.out.println("Start Glouton:");
-    	    	    	    	    	
-    	preparer();    	
-    	
-    	/*
-    	 *Calcule de la solution initiale.
-    	 */    	 		    
-    	ensSolutionFinale.add((Entrepot)ensRestant.get(1));
-    	ensRestant.remove(1);	    	
-    	       	   	   
+   	    	    	     	     	     	     	    	
+    	   	   
 		 boolean coutDescend = true;    	
     	/*
     	 *Continuer la recherche jusqu'a ne plus avoir d'entrepôts restants.ensRestant.size()>0
@@ -121,6 +143,7 @@ public class Glouton {
 		    
 		    /*
 	    	 *La recherche a été productive, on a trouvé donc le meilleur entrepôt à insérer.
+	    	 * Sans oublier que il est interdit de dégrader la solution.
 	    	 */	    	
 		    if (minCoeff !=  null && coutDescend)
 		    {		    	
@@ -137,8 +160,7 @@ public class Glouton {
 		    	ensRestant.remove(indice);	    	
 		    }		    		
 	    }
-	    
-	    	    	        		
+	    	    	    	     	    	    	    	        		
     }   
  
 }

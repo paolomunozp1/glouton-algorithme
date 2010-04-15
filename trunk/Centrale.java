@@ -20,12 +20,7 @@ import java.util.Vector;
 
 public class Centrale{	
 	public int id; 			//identificateur de la centrale
-	public int idParent;
-	public int cout;
-	
-	
-	public Centrale() // quantité total de centrales.
-	{		
-		
-	}					
+	public int idParent;	//identificateur de l'entrepôt affecté
+	public int cout;		//coût de la centrale.
+							
 }
