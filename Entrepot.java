@@ -1,30 +1,24 @@
 
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.Vector; 
-/**
- * -----------------------------------------------------------------------------
- * Class pour   
- *
- * @version 1.0
- * @responsable   Alexandro
- *@responsable   Evarille
- *@responsable   Anouchka
- * @description   Implémentation de l'algo 2
- * @Professor   Fertin Guillaume
- * -----------------------------------------------------------------------------
- */
- 
- 
 
-public class Entrepot{	
+import java.util.Vector; 
+import java.util.*; 
+import java.lang.*;
+
+
+  
+
+public class Entrepot implements Comparable {	
+
 	public int id; 				//identificateur de l'entrepot
 	private Vector centrales; // liste de centrales.
+	private int coutLivraison;
+	private Coefficient coefficientGain;
 	
 	public Entrepot() 
 	{		
 		centrales = new Vector(RP_exercice._nbEntrepots);	
+		coutLivraison = 0;
+		coefficientGain = new Coefficient();
 	}
 	
 	public Centrale get(int i)
@@ -39,6 +33,9 @@ public class Entrepot{
 		neuve.idParent = id ;
 		neuve.cout = pCout;
 		centrales.add(neuve);
+		
+		coutLivraison +=pCout;
+		
 	}
 	
 	public int size()
@@ -46,4 +43,55 @@ public class Entrepot{
 		return centrales.size();
 	}		
 	
+	public int cout()
+	{
+		if (coutLivraison == 0)
+		{		
+			int sortie = 0;
+			for (int i=0;i < centrales.size(); i++)
+			{
+				sortie += ((Centrale)centrales.get(i)).cout;
+			}
+			coutLivraison = sortie;
+		}
+		
+		return coutLivraison;
+	}
+	
+	
+	public Coefficient gain()
+	{
+		return coefficientGain;
+	}
+	
+	public void gain(Coefficient input)
+	{
+		coefficientGain = input;
+	}
+	
+	/*
+	 *.En ordre décroisant.
+	 */
+	public int compareTo(Object ob2)
+	{
+		int ob1c = this.gain().getValeur;
+		
+		int ob2c = ((Entrepot)ob2).gain().getValeur;
+		
+		if (ob1c > ob2c)
+			return -1;
+		else if (ob1c < ob2c)
+			return 1;
+		else return 0;
+		
+	}
+	
+	public boolean equals(Object ob2)
+	{
+		int id1 = this.id;
+		int id2 = ((Entrepot)ob2).id;
+		
+		return id1  == id2;
+		
+	}
 }
