@@ -5,98 +5,33 @@ import java.io.IOException;
 import java.util.Vector; 
 import java.util.*;
 
-/**
- * -----------------------------------------------------------------------------
- * Class pour   
- *
- * @version 1.0
- * @responsable   Alexandro
- *@responsable   Evarille
- *@responsable   Anouchka
- * @description   Implémentation de l'algo 2
- * @Professor   Fertin Guillaume
- * -----------------------------------------------------------------------------
- */
- 
  
 public class Glouton {
          
-    private static Solution ensSolutionFinale; // solution d'entrepôts
-    private static Vector ensRestant; // entrepôts restants
-    
-    
-    
-    // préparer les couts non specifies avec une valeur M = Max+1
-    public static void preparer() 
-    {
+    private Solution ensSolutionFinale; // solution d'centrepôts
+    private Vector ensRestant; // entrepôts restants
+        
+    public Glouton(Entrepot depart)
+    {    	
     	ensSolutionFinale= new Solution();
     	ensRestant = new Vector();
-    	
-    	int grandM = RP_exercice.maxValeur; 
-    	int n= RP_exercice._nbEntrepots;		
-    	
-    	for (int i=0; i<n; i++)
-    	{
-    		Entrepot neufEntrepot = new Entrepot();
     		
-    		//identificateur de chaque entrepôt est egal a indice dans la matrice couts.
-    		neufEntrepot.id = i;				
-    		
-    		
-    		for (int j=0; j<n; j++)	
-    		{    									
-    			if (RP_exercice._matrCouts[i][j] < 0)	
-				{						
-    				// on met le grand M a ceux qui n'apparaient pas dans le fichier txt.
-    				neufEntrepot.addCentr(j,grandM);
-    				RP_exercice._matrCouts[i][j] = grandM;
-				}
-    			else 
-    			//if (RP_exercice._matrCouts[i][j] > 0 || RP_exercice._prendZeros)	
-				{ 	
-					// il faut savoir si on prendra les couts = 0 autant que vrais couts.				    							
-    				neufEntrepot.addCentr(j,RP_exercice._matrCouts[i][j]);    				
-				}				
+		Hashtable<Integer,Entrepot> listeComplete = RP_exercice._listeComplete;
+		Object[] keysListeComplete = listeComplete.keySet().toArray();
 				
-				
-    		}
-    		ensRestant.add(neufEntrepot);
-    	}
-    }    	
-    
-    public static void Montrer()
-    {
-     	ensSolutionFinale.montrer();
-    }
-    
-    public static void creerVoisinage()
-    {
-    		    	    	 		        	 
-    	Voisinage voisins = new Voisinage(ensSolutionFinale);
+		for (int i=0; i<listeComplete.size(); i++)
+ 		{ 			
+ 			Entrepot temp = (Entrepot)listeComplete.get(keysListeComplete[i]); 			 			
+ 			ensRestant.add(temp); 			
+ 		} 	
+ 		
+ 		ensSolutionFinale.add(depart);	    	
+ 		ensRestant.remove(depart);
     	
-    	/*
-    	 *On va déterminer et montrer les voisins de la solution finale.
-    	 */ 
-    	while (voisins.isValid())
-    	{
-    		Solution voisin = voisins.next();    		
-    		voisin.montrer();
-    		Scanner sc = new Scanner(System.in);								
-			String option1=sc.nextLine();
-    	}    	    	
     }
-    
-    public static void creerSolutionInit()
-    {
-    	/*
-    	 *Calcule de la solution initiale
-    	 */    	 		    
-    	ensSolutionFinale.add((Entrepot)ensRestant.get(1));
-    	ensRestant.remove(1);	    	
-		
-    }
-    
-    public  static void Executer()  
+  
+        
+    public  Solution Executer()  
     {
     	System.out.println("Start Glouton:");
    	    	    	     	     	     	     	    	
@@ -134,15 +69,17 @@ public class Glouton {
 		    	 */
 	    		if (min > coeff.getValeur )	    		
 	    		{
+	    			
 	    			min= coeff.getValeur;
-	    			minCoeff = coeff;
-	    			indice = i;
-	    			if (min >0) coutDescend = false;
-	    		}    		
+	    			minCoeff = coeff;	    				    			
+	    		}   
+	    		if (min >= 0) coutDescend = false;
+	    		else coutDescend = true;
+	    		
 		    }			
 		    
 		    /*
-	    	 *La recherche a été productive, on a trouvé donc le meilleur entrepôt à insérer.
+	    	 *Si La recherche a été productive, on a trouvé donc le meilleur entrepôt à insérer.
 	    	 * Sans oublier que il est interdit de dégrader la solution.
 	    	 */	    	
 		    if (minCoeff !=  null && coutDescend)
@@ -157,9 +94,13 @@ public class Glouton {
 		    	/*
 		    	 * Enlever l'entrepôt seléctioné de l'ensemble d'entrepôt restants.
 		    	 */
-		    	ensRestant.remove(indice);	    	
+		    	ensRestant.remove(minCoeff.entrepot);	    	
 		    }		    		
+		    
+		    
 	    }
+	    
+	    return ensSolutionFinale.clone();
 	    	    	    	     	    	    	    	        		
     }   
  

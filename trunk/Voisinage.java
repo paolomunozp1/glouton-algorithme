@@ -4,72 +4,104 @@ import java.io.IOException;
 import java.util.Vector; 
 import java.util.Hashtable;
 
-/**
- * -----------------------------------------------------------------------------
- * Class pour   
- *
- * @version 1.0
- * @responsable   Alexandro
- *@responsable   Evarille
- *@responsable   Anouchka
- * @description   Implémentation de l'algo 2
- * @Professor   Fertin Guillaume
- * -----------------------------------------------------------------------------
- */
+
    
  
 public class Voisinage
-{
-	private Solution _solution;	
-		
-	private int _i=1;
-	private int _j=0;
+{		
+	private Solution pointDepart; 
+	private Vector<Solution> listeVoisins;
+	private Vector<Entrepot> listeRestants; 
 	
+	private int coutMinimum;
+	private int nbEntrOuverts;
+	private int nbEntrRestants;		
+	
+	
+	/*
+	 *.On va trouver les voisins à partir d'une solution déjà trouvée
+	 */
 	public Voisinage( Solution sol)
 	{
-		_solution = new Solution();
-		_solution = sol;
+		pointDepart = sol;		
+		listeRestants = sol.restants();
+		coutMinimum = sol.cout();
 		
+		nbEntrOuverts= sol.nbEntrepots();
+		nbEntrRestants = RP_exercice._nbEntrepots - nbEntrOuverts;
+		
+		
+		listeVoisins = new Vector(nbEntrRestants*nbEntrOuverts);
+				
 	}
 		
+	/*
+	 *.La liste donné est valide
+	 */
 	public boolean isValid()
 	{
-		return 	_solution.size() == RP_exercice._nbEntrepots && _i < RP_exercice._nbEntrepots;
+		
+		return 	(nbEntrOuverts+listeRestants.size()) == RP_exercice._nbEntrepots;
 	}
 	
-	public Solution next()
-	{		
-		echange(_i,_j);
+	/*
+	 *.Exécution de l'algo
+	 */	
+	public Solution Executer() 
+	{				
+		System.out.println("Start Voisinage:");
 		
-		if ( _j < _i) _j++;
-		if ( _j == _i ) {_i++; _j=0;}
+		Solution pointMinimal = pointDepart;
 		
+		if (!this.isValid()) {
+				System.out.println("Error lors de l'execution du voisinage.");
+				return pointMinimal;	
+		}							    
 		
-		return _solution;
-	}
-	
-	private void echange(int pi, int pj)
-	{		
-				
-		Centrale centrPi = _solution.get(pi);
-		Centrale centrPj = _solution.get(pj);
-		
-		
-		int piParentEntrepot = centrPi.idParent;
-		int pjParentEntrepot = centrPj.idParent;
-		
-		int piCout = RP_exercice._matrCouts[piParentEntrepot][pi];
-		int pjCout = RP_exercice._matrCouts[pjParentEntrepot][pj];
-		
-		if (piParentEntrepot != pjParentEntrepot)
-		{
-			centrPi.idParent = pjParentEntrepot;
-			centrPi.cout = pjCout;
+									
+		for (int i=0; i< nbEntrOuverts ; i++)
+		for (int j=0; j< nbEntrRestants ; j++)		
+		{			
+			Solution solVoisin = echange(i,j);										
+									
+			int cout =solVoisin.cout(); 
+						
+			if (coutMinimum >  cout ){			
+				pointMinimal = solVoisin;
+				coutMinimum = cout;				
+			}
 			
-			centrPj.idParent = piParentEntrepot;
-			centrPj.cout = piCout;
-		}				
+			listeVoisins.add(solVoisin);
+						
+		}		
+				
+		return pointMinimal;
+				
 	}
+	
+	/*
+	 *.Donne le nombre des voisins trouvés.
+	 */
+	public int nbVoisins()
+	{
+		return listeVoisins.size();
+	}
+	
+	/*
+	 *.Méthode pour fermer un entrepôt ouvert et ouvrir un entrepôt fermé.
+	 */
+	private Solution echange(int pi, int pj)
+	{		
+		Solution solClonee = pointDepart.clone();
+		
+		Entrepot sortant  =  (Entrepot)pointDepart.values().get(pi);
+		solClonee.supr(sortant);
+		
+		Entrepot entrant = listeRestants.get(pj);				
+		solClonee.add(entrant);
+		
+		return solClonee;
+	}		
 		
         
 }

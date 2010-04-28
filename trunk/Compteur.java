@@ -1,14 +1,9 @@
-/**
- * -----------------------------------------------------------------------------
- * Class pour   
- *
- * @version 1.0
- * @responsable   Alexandro Ruiz 
- * @description   Class calcule d'un temps d'exécution défini
- * @Professor   Fertin Guillaume
- * -----------------------------------------------------------------------------
- */
- 
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.Vector; 
+import java.util.Hashtable;
+
  
 public class Compteur
 {
